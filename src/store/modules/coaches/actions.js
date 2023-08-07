@@ -3,6 +3,8 @@ import { generateDBURL } from '../../../utils/http';
 export default {
   async registerCoach(context, data) {
     const userId = context.rootGetters.userId;
+    const token = context.rootGetters.token;
+
     const coachData = {
       firstName: data.first,
       lastName: data.last,
@@ -11,10 +13,13 @@ export default {
       areas: data.areas,
     };
 
-    const response = await fetch(generateDBURL(`/coaches/${userId}`), {
-      method: 'PUT',
-      body: JSON.stringify(coachData),
-    });
+    const response = await fetch(
+      generateDBURL(`/coaches/${userId}`, `auth=${token}`),
+      {
+        method: 'PUT',
+        body: JSON.stringify(coachData),
+      }
+    );
 
     if (!response.ok) {
       const error = new Error(data.message || 'Failed to register!');

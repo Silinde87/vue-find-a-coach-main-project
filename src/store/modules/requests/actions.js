@@ -27,8 +27,11 @@ export default {
   },
   async fetchRequests(context) {
     const coachId = context.rootGetters.userId;
+    const token = context.rootGetters.token;
 
-    const response = await fetch(generateDBURL(`/requests/${coachId}`));
+    const response = await fetch(
+      generateDBURL(`/requests/${coachId}`, `auth=${token}`)
+    );
     const data = await response.json();
 
     if (!response.ok) {
